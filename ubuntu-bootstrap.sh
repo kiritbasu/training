@@ -57,7 +57,7 @@ sudo pip install peewee
 sudo docker-compose up -d
 
 #download kafka and start as daemon
-wget wget http://apache.mirrors.tds.net/kafka/0.9.0.1/kafka_2.11-0.9.0.1.tgz
+wget http://apache.mirrors.tds.net/kafka/0.9.0.1/kafka_2.11-0.9.0.1.tgz
 tar -xf kafka_2.11-0.9.0.1.tgz
 rm kafka_2.11-0.9.0.1.tgz
 mv kafka_2.11-0.9.0.1 kafka

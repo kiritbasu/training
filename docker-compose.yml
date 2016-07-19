@@ -1,0 +1,16 @@
+cloudera:
+  image: cloudera/quickstart
+  ports:
+    - "81:80"
+    - "8020:8020"
+    - "8088:8088"
+    - "7180:7180"
+    - "8888:8888"
+    - "19888:19888"
+    - "50070:50070"
+    - "50090:50090"
+    - "60010:60010"
+  privileged: true
+  tty: true
+  hostname: quickstart.cloudera
+  command: /usr/bin/docker-quickstart

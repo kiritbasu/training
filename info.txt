@@ -1,0 +1,27 @@
+To launch instance:
+EC2 dashboard->Launch instance
+Select Ubuntu Server 14.04 LTS (HVM), SSD Volume Type
+Select m4.2xlarge
+Go to tab 4. Add Storage
+Set size to about 30 GiB
+Review and launch->launch
+
+# Install Kafka
+wget http://apache.osuosl.org/kafka/0.8.2.2/kafka_2.10-0.8.2.2.tgz && tar -xvf kafka_2.10-0.8.2.2.tgz && rm kafka_2.10-0.8.2.2.tgz
+
+# Download files from github
+# Copy files over
+scp -i $YOUR_PEM_FILE $PATH_TO_FOLDER/* ubuntu@$YOUR_PUBLIC_DNS:/home/ubuntu/
+
+#Setup environment
+chmod 744 ubuntu-bootstrap.sh
+./ubuntu-bootstrap.sh
+
+# Create database 
+mysql -uroot -ppassword < createdb.sql
+
+# Populate table
+python initmysql.py
+
+# Add and populate new column
+mysql -uroot -ppassword streamsetsdemo < alterer.sql

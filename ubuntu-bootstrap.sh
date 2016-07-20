@@ -73,7 +73,7 @@ wget http://apache.mirrors.tds.net/kafka/0.9.0.1/kafka_2.11-0.9.0.1.tgz
 tar -xf kafka_2.11-0.9.0.1.tgz
 rm kafka_2.11-0.9.0.1.tgz
 mv kafka_2.11-0.9.0.1 kafka
-nohup ~/kafka/bin/kafka-server-start.sh ~/kafka/config/server.properties > kafka.log 2>&1 &
+nohup /home/root/kafka/bin/kafka-server-start.sh /home/root/kafka/config/server.properties > /home/root/kafka.log 2>&1 &
 
 #start up docker compose in background
 sudo docker-compose up -d

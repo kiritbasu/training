@@ -29,6 +29,14 @@ curl -sSL https://get.docker.com/ | sh
 #install python necessities
 sudo apt-get install -y python-pip libmysqlclient-dev python-dev
 
+# set default password
+sudo apt-get install -y debconf-utils
+echo mysql-server-5.0 mysql-server/root_password password PASSWORD | debconf-set-selections
+echo mysql-server-5.0 mysql-server/root_password_again password PASSWORD | debconf-set-selections
+
+echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+
 #mysql server
 sudo apt-get install -y mysql-server
 
@@ -52,6 +60,7 @@ sudo pip install mysql-python
 
 #client to simplyify mysql operations
 sudo pip install peewee
+
 
 #download MySQL Drivers
 wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.39.tar.gz

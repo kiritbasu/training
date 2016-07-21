@@ -75,7 +75,7 @@ mv kafka_2.11-0.9.0.1 kafka
 nohup /home/root/kafka/bin/kafka-server-start.sh /home/root/kafka/config/server.properties > /home/root/kafka.log 2>&1 &
 
 #install docker
-# curl -sSL https://get.docker.com/ | sh
+curl -sSL https://get.docker.com/ | sh
 
 #start up docker compose in background
-# sudo docker-compose up -d
+sudo docker-compose up -d

@@ -30,9 +30,9 @@ curl -sSL https://get.docker.com/ | sh
 sudo apt-get install -y python-pip libmysqlclient-dev python-dev
 
 # set default password
-#sudo apt-get install -y debconf-utils
-#echo mysql-server-5.0 mysql-server/root_password password password | sudo debconf-set-selections
-#echo mysql-server-5.0 mysql-server/root_password_again password password | sudo debconf-set-selections
+sudo apt-get install -y debconf-utils
+echo mysql-server-5.0 mysql-server/root_password password password | sudo debconf-set-selections
+echo mysql-server-5.0 mysql-server/root_password_again password password | sudo debconf-set-selections
 
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections

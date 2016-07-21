@@ -72,7 +72,7 @@ wget http://apache.mirrors.tds.net/kafka/0.9.0.1/kafka_2.11-0.9.0.1.tgz
 tar -xf kafka_2.11-0.9.0.1.tgz
 rm kafka_2.11-0.9.0.1.tgz
 mv kafka_2.11-0.9.0.1 kafka
-nohup /home/root/kafka/bin/kafka-server-start.sh /home/root/kafka/config/server.properties > /home/root/kafka.log 2>&1 &
+nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties > /root/kafka.log 2>&1 &
 
 #install docker
 curl -sSL https://get.docker.com/ | sh

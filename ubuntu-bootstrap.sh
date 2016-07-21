@@ -40,9 +40,6 @@ echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-se
 #mysql server
 sudo apt-get install -y mysql-server
 
-#setup mysql database
-./setup_mysql.sh
-
 # java
 sudo apt-get install -y oracle-java7-installer
 
@@ -64,6 +61,8 @@ sudo pip install mysql-python
 #client to simplyify mysql operations
 sudo pip install peewee
 
+#setup mysql database
+./setup_mysql.sh
 
 #download MySQL Drivers
 wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.39.tar.gz

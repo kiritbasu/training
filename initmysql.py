@@ -16,6 +16,7 @@ class ZipCode(Model):
 if __name__=='__main__':
     db.create_tables([ZipCode], safe=True)
 
+    print "Inserting Data into MySQL"
     outarray=[]
     with open('zip_codes_states.csv', 'rU') as f:
         reader = csv.DictReader(f)

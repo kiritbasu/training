@@ -40,6 +40,9 @@ echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-se
 #mysql server
 sudo apt-get install -y mysql-server
 
+#setup mysql database
+./setup_mysql.sh
+
 # java
 sudo apt-get install -y oracle-java7-installer
 

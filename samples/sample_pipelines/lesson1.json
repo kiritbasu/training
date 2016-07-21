@@ -182,7 +182,7 @@
         "value" : "JSON"
       }, {
         "name" : "conf.spoolDir",
-        "value" : "/Users/nikil/training/origin/lesson1"
+        "value" : "/root/training/samples/data/lesson1/"
       }, {
         "name" : "conf.allowLateDirectory",
         "value" : false

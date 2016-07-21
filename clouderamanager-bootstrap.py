@@ -12,7 +12,7 @@ for c in api.get_all_clusters():
     if c.version == "CDH5":
         cdh5 = c
 
-startuplist = ['hdfs', 'hive', 'impala', 'hue']
+startuplist = ['zookeeper', 'hdfs', 'hive', 'impala', 'hue']
 
 if cdh5 is not None:
     services = [s for s in cdh5.get_all_services()]

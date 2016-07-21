@@ -78,4 +78,4 @@ nohup /home/root/kafka/bin/kafka-server-start.sh /home/root/kafka/config/server.
 curl -sSL https://get.docker.com/ | sh
 
 #start up docker compose in background
-sudo docker-compose up -d
+# sudo docker-compose up -d

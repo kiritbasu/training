@@ -23,16 +23,13 @@ sudo apt-get update
 
 sudo apt-get -y install vim
 
-#install docker
-curl -sSL https://get.docker.com/ | sh
-
 #install python necessities
 sudo apt-get install -y python-pip libmysqlclient-dev python-dev
 
-# set default password
+# set default mysql password
 sudo apt-get install -y debconf-utils
-echo mysql-server-5.0 mysql-server/root_password password password | sudo debconf-set-selections
-echo mysql-server-5.0 mysql-server/root_password_again password password | sudo debconf-set-selections
+echo mysql-server-5.5 mysql-server/root_password password password | sudo debconf-set-selections
+echo mysql-server-5.5 mysql-server/root_password_again password password | sudo debconf-set-selections
 
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
@@ -76,6 +73,9 @@ tar -xf kafka_2.11-0.9.0.1.tgz
 rm kafka_2.11-0.9.0.1.tgz
 mv kafka_2.11-0.9.0.1 kafka
 nohup /home/root/kafka/bin/kafka-server-start.sh /home/root/kafka/config/server.properties > /home/root/kafka.log 2>&1 &
+
+#install docker
+curl -sSL https://get.docker.com/ | sh
 
 #start up docker compose in background
 sudo docker-compose up -d

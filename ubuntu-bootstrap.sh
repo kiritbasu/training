@@ -28,8 +28,8 @@ sudo apt-get install -y python-pip libmysqlclient-dev python-dev
 
 # set default mysql password
 sudo apt-get install -y debconf-utils
-echo mysql-server-5.7 mysql-server/root_password password password | sudo debconf-set-selections
-echo mysql-server-5.7 mysql-server/root_password_again password password | sudo debconf-set-selections
+echo mysql-server-5.5 mysql-server/root_password password password | sudo debconf-set-selections
+echo mysql-server-5.5 mysql-server/root_password_again password password | sudo debconf-set-selections
 
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections

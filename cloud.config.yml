@@ -1,0 +1,15 @@
+#cloud-config
+chpasswd:
+  list: |
+    root:str3ams3ts
+  expire: false
+runcmd:
+  - cd /root
+  - sudo apt-get -y install git
+  - git clone https://github.com/kiritbasu/training.git
+  - cd training
+  - chmod 744 *.sh
+  - ./ubuntu-bootstrap.sh
+  - sleep 10
+  - ./cloudera-bootstrap.sh
+final_message: "The system is finally up, after $UPTIME seconds"

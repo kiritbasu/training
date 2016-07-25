@@ -40,9 +40,6 @@ sudo apt-get install -y mysql-server
 # java
 sudo apt-get install -y oracle-java7-installer
 
-# zookeeper daemon
-# sudo apt-get install -y zookeeperd
-
 #docker-compose
 sudo pip install docker-compose
 
@@ -74,6 +71,7 @@ rm kafka_2.11-0.9.0.1.tgz
 mv kafka_2.11-0.9.0.1 /root/kafka
 
 nohup /root/kafka/bin/zookeeper-server-start.sh /root/kafka/config/zookeeper.properties > /root/kafka/zookeeper.log 2>&1 &
+sleep 10
 nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties > /root/kafka/kafka.log 2>&1 &
 
 #install docker

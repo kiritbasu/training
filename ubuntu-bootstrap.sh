@@ -12,6 +12,13 @@ sudo echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt
 
 sudo add-apt-repository ppa:webupd8team/java
 
+#install redis from dotdeb
+# /etc/apt/sources.list.d/dotdeb.org.list
+echo deb http://packages.dotdeb.org squeeze all >> /etc/apt/sources.list.d/dotdeb.org.list
+echo deb-src http://packages.dotdeb.org squeeze all >> /etc/apt/sources.list.d/dotdeb.org.list
+wget -q -O - http://www.dotdeb.org/dotdeb.gpg | sudo apt-key add -
+sudo apt-get update
+
 ## Update your package manager.
 sudo apt-get update
 
@@ -22,6 +29,7 @@ sudo apt-get -y install linux-image-extra-$(uname -r)
 sudo apt-get update
 
 sudo apt-get -y install vim
+sudo apt-get -y install redis-server
 
 #install python necessities
 sudo apt-get install -y python-pip libmysqlclient-dev python-dev
@@ -73,6 +81,9 @@ mv kafka_2.11-0.9.0.1 /root/kafka
 nohup /root/kafka/bin/zookeeper-server-start.sh /root/kafka/config/zookeeper.properties > /root/kafka/zookeeper.log 2>&1 &
 sleep 10
 nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties > /root/kafka/kafka.log 2>&1 &
+
+
+
 
 #install docker
 curl -sSL https://get.docker.com/ | sh

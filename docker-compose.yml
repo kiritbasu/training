@@ -15,9 +15,3 @@ cloudera:
   tty: true
   hostname: quickstart.cloudera
   command: /usr/bin/docker-quickstart
-redis:
-  image: redis
-  ports:
-    - "6379:6379"
-  volumes:
-    - ./:/mnt/shared/demo

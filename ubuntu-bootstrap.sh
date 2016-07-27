@@ -60,6 +60,12 @@ sudo pip install awscli
 #install redis client
 sudo pip install redis
 
+#setup redis database
+python init_redis_data.py
+
+#copy Hive config files
+./copy_hive_conf.sh
+
 #python mysql
 sudo pip install mysql-python
 
@@ -84,8 +90,6 @@ mv kafka_2.11-0.9.0.1 /root/kafka
 nohup /root/kafka/bin/zookeeper-server-start.sh /root/kafka/config/zookeeper.properties > /root/kafka/zookeeper.log 2>&1 &
 sleep 10
 nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties > /root/kafka/kafka.log 2>&1 &
-
-
 
 
 #install docker

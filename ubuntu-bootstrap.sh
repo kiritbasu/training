@@ -57,6 +57,9 @@ sudo pip install cm-api
 #install AWS client
 sudo pip install awscli
 
+#install redis client
+sudo pip install redis
+
 #python mysql
 sudo pip install mysql-python
 

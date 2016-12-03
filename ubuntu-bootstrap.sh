@@ -47,7 +47,7 @@ echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-se
 sudo apt-get install -y mysql-server
 
 # java
-sudo apt-get install -y oracle-java7-installer
+sudo apt-get install oracle-java8-installer
 
 #docker-compose
 sudo pip install docker-compose
@@ -95,6 +95,10 @@ nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties
 #download and extract StreamSets
 wget https://archives.streamsets.com/datacollector/2.2.0.0/tarball/streamsets-datacollector-all-2.2.0.0.tgz
 tar xvzf streamsets-datacollector-all-2.2.0.0.tgz
+
+#up the open file limit
+echo "root soft nofile 40000" >> /etc/security/limits.conf && echo "root hard nofile 64000" >> /etc/security/limits.conf
+
 
 #install docker
 curl -sSL https://get.docker.com/ | sh

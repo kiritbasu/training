@@ -1,4 +1,4 @@
-## Setup a basic Ubuntu 14.04 box with stuff needed to run StreamSets Demo Environment
+## Setup a basic Ubuntu 16 box with stuff needed to run StreamSets Demo Environment
 
 ## Update your package manager.
 sudo apt-get update
@@ -10,6 +10,7 @@ sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58
 sudo touch /etc/apt/sources.list.d/docker.list
 sudo echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
 
+#for java7
 sudo add-apt-repository ppa:webupd8team/java
 
 #install redis from dotdeb
@@ -19,13 +20,13 @@ echo deb-src http://packages.dotdeb.org squeeze all >> /etc/apt/sources.list.d/d
 wget -q -O - http://www.dotdeb.org/dotdeb.gpg | sudo apt-key add -
 sudo apt-get update
 
-## Update your package manager.
+## Update package manager.
 sudo apt-get update
 
 ## Install the recommended package.
 sudo apt-get -y install linux-image-extra-$(uname -r)
 
-## Update your package manager.
+## Update package manager.
 sudo apt-get update
 
 sudo apt-get -y install vim
@@ -91,6 +92,9 @@ nohup /root/kafka/bin/zookeeper-server-start.sh /root/kafka/config/zookeeper.pro
 sleep 10
 nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties > /root/kafka/kafka.log 2>&1 &
 
+#download and extract StreamSets
+wget https://archives.streamsets.com/datacollector/2.2.0.0/tarball/streamsets-datacollector-all-2.2.0.0.tgz
+tar xvzf streamsets-datacollector-all-2.2.0.0.tgz
 
 #install docker
 curl -sSL https://get.docker.com/ | sh

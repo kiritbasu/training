@@ -100,6 +100,9 @@ echo "root soft nofile 40000" >> /etc/security/limits.conf && echo "root hard no
 
 echo "session required pam_limits.so" >> /etc/pam.d/common-session
 
+echo "fs.file-max = 40000" >> /etc/sysctl.conf
+sysctl -p
+
 #install jdbc drivers to sdc
 ./install_jdbc_drivers.sh
 
@@ -111,6 +114,3 @@ curl -sSL https://get.docker.com/ | sh
 
 #start up docker compose in background
 sudo docker-compose up -d
-
-#copy Hive config files
-./copy_hive_conf.sh

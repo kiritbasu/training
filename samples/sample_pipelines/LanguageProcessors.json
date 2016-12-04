@@ -1,0 +1,352 @@
+{
+  "pipelineConfig" : {
+    "schemaVersion" : 2,
+    "version" : 5,
+    "uuid" : "8b9c1571-8be2-4ef9-b74f-d74407ef888d",
+    "description" : "Just a list of language processors for show and tell (no real functionality in this pipeline)",
+    "configuration" : [ {
+      "name" : "executionMode",
+      "value" : "STANDALONE"
+    }, {
+      "name" : "deliveryGuarantee",
+      "value" : "AT_LEAST_ONCE"
+    }, {
+      "name" : "shouldRetry",
+      "value" : true
+    }, {
+      "name" : "retryAttempts",
+      "value" : -1
+    }, {
+      "name" : "memoryLimit",
+      "value" : "${jvm:maxMemoryMB() * 0.65}"
+    }, {
+      "name" : "memoryLimitExceeded",
+      "value" : "STOP_PIPELINE"
+    }, {
+      "name" : "notifyOnStates",
+      "value" : [ "RUN_ERROR", "STOPPED", "FINISHED" ]
+    }, {
+      "name" : "emailIDs",
+      "value" : [ ]
+    }, {
+      "name" : "constants",
+      "value" : [ ]
+    }, {
+      "name" : "badRecordsHandling",
+      "value" : null
+    }, {
+      "name" : "clusterSlaveMemory",
+      "value" : 1024
+    }, {
+      "name" : "clusterSlaveJavaOpts",
+      "value" : "-XX:PermSize=128M -XX:MaxPermSize=256M -Dhttps.protocols=TLSv1.2,TLSv1.1 -Dlog4j.debug"
+    }, {
+      "name" : "clusterLauncherEnv",
+      "value" : [ ]
+    }, {
+      "name" : "mesosDispatcherURL",
+      "value" : null
+    }, {
+      "name" : "hdfsS3ConfDir",
+      "value" : null
+    }, {
+      "name" : "rateLimit",
+      "value" : 0
+    }, {
+      "name" : "statsAggregatorStage",
+      "value" : ""
+    } ],
+    "uiInfo" : {
+      "previewConfig" : {
+        "previewSource" : "CONFIGURED_SOURCE",
+        "batchSize" : 10,
+        "timeout" : 10000,
+        "writeToDestinations" : false,
+        "showHeader" : false,
+        "showFieldType" : true,
+        "rememberMe" : false
+      }
+    },
+    "stages" : [ {
+      "instanceName" : "DevRandomRecordSource_01",
+      "library" : "streamsets-datacollector-dev-lib",
+      "stageName" : "com_streamsets_pipeline_stage_devtest_RandomSource",
+      "stageVersion" : "1",
+      "configuration" : [ {
+        "name" : "fields",
+        "value" : "a,b,c"
+      }, {
+        "name" : "delay",
+        "value" : 1000
+      }, {
+        "name" : "maxRecordsToGenerate",
+        "value" : 922337203685
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "label" : "Dev Random Record Source 1",
+        "xPos" : 60,
+        "yPos" : 50,
+        "stageType" : "SOURCE"
+      },
+      "inputLanes" : [ ],
+      "outputLanes" : [ "DevRandomRecordSource_01OutputLane14807971798590" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "GroovyEvaluator_01",
+      "library" : "streamsets-datacollector-groovy_2_4-lib",
+      "stageName" : "com_streamsets_pipeline_stage_processor_groovy_GroovyDProcessor",
+      "stageVersion" : "1",
+      "configuration" : [ {
+        "name" : "processingMode",
+        "value" : "BATCH"
+      }, {
+        "name" : "script",
+        "value" : "/*\n * Available constants: \n *   They are to assign a type to a field with a value null.\n *   NULL_BOOLEAN, NULL_CHAR, NULL_BYTE, NULL_SHORT, NULL_INTEGER, NULL_LONG\n *   NULL_FLOATNULL_DOUBLE, NULL_DATE, NULL_DATETIME, NULL_TIME, NULL_DECIMAL\n *   NULL_BYTE_ARRAY, NULL_STRING, NULL_LIST, NULL_MAP\n *\n * Available objects:\n *   records: A collection of Records to process. Depending on the processing mode\n *            it may have 1 record or all the records in the batch (default).\n *\n *   state: A Map<String, Object> that is preserved between invocations of this script.\n *          Useful for caching bits of data, e.g. counters.\n *\n *   log.<level>(msg, obj...): Use instead of println to send log messages to the log4j log\n *                             instead of stdout.\n *                             loglevel is any log4j level: e.g. info, warn, error, trace.\n *   output.write(Record): Writes a record to the processor output.\n *\n *   error.write(Record): Writes a record to the error pipeline.\n *\n *   sdcFunctions.getFieldNull(Record, 'field path'): Receive a constant defined above \n *                          to check if the field is typed field with value null\n *\n *   sdcFunctions.createRecord(String recordId): Creates a new record.\n *                          Pass a recordId to uniquely identify the record and include enough information to track down the record source. \n *   sdcFunctions.createMap(boolean listMap): Create a map for use as a field in a record. \n *                          Pass true to this function to create a list map (ordered map)\n *\n *   sdcFunctions.createEvent(String type, int version): Creates a new event.\n *                          Create new empty event with standard headers.\n *   sdcFunctions.toEvent(Record): Send event to event stream\n *                          Only events created with sdcFunctions.createEvent are supported.\n *\n * Available Record Header Variables:\n *   record.attributes: a map of record header attributes.\n *\n *   record.<header name>: get the value of 'header name'.\n */ \n\n // Sample Groovy code\nfor (record in records) {\n  try {\n    // Change record root field value to a String value.\n    // record.value = \"Hello\"\n    \n    // Change record root field value to a map value and create an entry\n    // record.value = [firstName:'John', lastName:'Doe', age:25]\n    \n    // Access a map entry\n    // record.value['fullName'] = record.value['firstName'] + ' ' + record.value['lastName']\n    \n    // Create a list entry\n    // record.value['myList'] = [1, 2, 3, 4]\n    \n    // Modify an existing list entry\n    // record.value['myList'][0] = 5\n    \n    // Assign a integer type to a field and value null\n    // record.value['null_int'] = NULL_INTEGER \n    \n    // Check if the field is NULL_INTEGER. If so, assign a value \n    // if(sdcFunctions.getFieldNull(record, '/null_int') == NULL_INTEGER)\n    //    record.value['null_int'] = 123\n    \n    // Create a new record with map field \n    // newRecord = sdcFunctions.createRecord(record.sourceId + ':newRecordId')\n    // newRecord.value = ['field1':'val1', 'field2' : 'val2']\n    // newMap = sdcFunctions.createMap(true)\n    // newMap['field'] = 'val' \n    // newRecord.value['field2'] =  newMap\n    // output.write(newRecord)\n    \n    //Applies if the source uses WHOLE_FILE as data format\n    //input_stream = record.value['fileRef'].getInputStream();\n    //try {\n      //input_stream.read(); //Process the input stream\n    //} finally {\n      //input_stream.close();\n    //}\n    \n    // Modify a record header attribute entry\n    //record.attributes['name'] = record.attributes['first_name'] + ' ' + record.attributes['last_name']\n    \n    // Get a record header with field names ex. get sourceId and errorCode\n    //String sourceId = record.sourceId\n    //String errorCode = ''\n    //if(record.errorCode) {\n    //    errorCode = record.errorCode\n    //}\n    \n    // Write a record to the processor output\n    output.write(record)\n  } catch (e) {\n    // Write a record to the error pipeline\n    log.error(e.toString(), e)\n    error.write(record, e.toString())\n  }\n}"
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "label" : "Groovy Evaluator 1",
+        "xPos" : 280,
+        "yPos" : 50,
+        "stageType" : "PROCESSOR"
+      },
+      "inputLanes" : [ "DevRandomRecordSource_01OutputLane14807971798590" ],
+      "outputLanes" : [ "GroovyEvaluator_01OutputLane14807971888300" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "JavaScriptEvaluator_01",
+      "library" : "streamsets-datacollector-basic-lib",
+      "stageName" : "com_streamsets_pipeline_stage_processor_javascript_JavaScriptDProcessor",
+      "stageVersion" : "2",
+      "configuration" : [ {
+        "name" : "processingMode",
+        "value" : "BATCH"
+      }, {
+        "name" : "script",
+        "value" : "/**\n * Available constants: \n *   They are to assign a type to a field with a value null.\n *   NULL_BOOLEAN, NULL_CHAR, NULL_BYTE, NULL_SHORT, NULL_INTEGER, NULL_LONG\n *   NULL_FLOATNULL_DOUBLE, NULL_DATE, NULL_DATETIME, NULL_TIME, NULL_DECIMAL\n *   NULL_BYTE_ARRAY, NULL_STRING, NULL_LIST, NULL_MAP\n *\n * Available Objects:\n * \n *  records: an array of records to process, depending on the JavaScript processor\n *           processing mode it may have 1 record or all the records in the batch.\n *\n *  state: a dict that is preserved between invocations of this script. \n *        Useful for caching bits of data e.g. counters.\n *\n *  log.<loglevel>(msg, obj...): use instead of print to send log messages to the log4j log instead of stdout.\n *                               loglevel is any log4j level: e.g. info, error, warn, trace.\n *\n *  output.write(record): writes a record to processor output\n *\n *  error.write(record, message): sends a record to error\n *\n *  sdcFunctions.getFieldNull(Record, 'field path'): Receive a constant defined above\n *                            to check if the field is typed field with value null\n *  sdcFunctions.createRecord(String recordId): Creates a new record.\n *                            Pass a recordId to uniquely identify the record and include enough information to track down the record source. \n *  sdcFunctions.createMap(boolean listMap): Create a map for use as a field in a record.\n *                            Pass true to this function to create a list map (ordered map)\n *\n *  sdcFunctions.createEvent(String type, int version): Creates a new event.\n *                            Create new empty event with standard headers.\n *  sdcFunctions.toEvent(Record): Send event to event stream\n *                            Only events created with sdcFunctions.createEvent are supported.\n *\n * Available Record Header Variables:n *\n *  record.attributes: a map of record header attributes.\n *\n *  record.<header name>: get the value of 'header name'.\n */\n\n// Sample JavaScript code\nfor(var i = 0; i < records.length; i++) {\n  try {\n    // Change record root field value to a STRING value\n    //records[i].value = 'Hello ' + i;\n\n\n    // Change record root field value to a MAP value and create an entry\n    //records[i].value = { V : 'Hello' };\n\n    // Access a MAP entry\n    //records[i].value.X = records[i].value['V'] + ' World';\n\n    // Modify a MAP entry\n    //records[i].value.V = 5;\n\n    // Create an ARRAY entry\n    //records[i].value.A = ['Element 1', 'Element 2'];\n\n    // Access a Array entry\n    //records[i].value.B = records[i].value['A'][0];\n\n    // Modify an existing ARRAY entry\n    //records[i].value.A[0] = 100;\n\n    // Assign a integer type to a field and value null\n    // records[i].value.null_int = NULL_INTEGER \n\n    // Check if the field is NULL_INTEGER. If so, assign a value \n    // if(sdcFunctions.getFieldNull(records[i], '/null_int') == NULL_INTEGER)\n    //    records[i].value.null_int = 123\n\n    // Create a new record with map field \n    // var newRecord = sdcFunctions.createRecord(records[i].sourceId + ':newRecordId');\n    // newRecord.value = {'field1' : 'val1', 'field2' : 'val2'};\n    // output.write(newRecord);\n    // Create a new map and add it to the original record\n    // var newMap = sdcFunctions.createMap(true);\n    // newMap['key'] = 'value';\n    // records[i].value['b'] = newMap;\n\n    //Applies if the source uses WHOLE_FILE as data format\n    //var input_stream = record.value['fileRef'].getInputStream();\n    //try {\n      //input_stream.read(); //Process the input stream\n    //} finally{\n      //input_stream.close()\n    //}\n\n    // Modify a header attribute entry\n    // records[i].attributes['name'] = records[i].attributes['first_name'] + ' ' + records[i].attributes['last_name']    //\n\n    // Get a record header with field names ex. get sourceId and errorCode\n    // var sourceId = records[i].sourceId\n    // var errorCode = ''\n    // if(records[i].errorCode) {\n    //     errorCode = records[i].errorCode\n    // }\n\n    // Write record to processor output\n    output.write(records[i]);\n  } catch (e) {\n    // Send record to error\n    error.write(records[i], e);\n  }\n}\n"
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "label" : "JavaScript Evaluator 1",
+        "xPos" : 500,
+        "yPos" : 50,
+        "stageType" : "PROCESSOR"
+      },
+      "inputLanes" : [ "GroovyEvaluator_01OutputLane14807971888300" ],
+      "outputLanes" : [ "JavaScriptEvaluator_01OutputLane14807971939450" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "JythonEvaluator_01",
+      "library" : "streamsets-datacollector-jython_2_7-lib",
+      "stageName" : "com_streamsets_pipeline_stage_processor_jython_JythonDProcessor",
+      "stageVersion" : "2",
+      "configuration" : [ {
+        "name" : "processingMode",
+        "value" : "BATCH"
+      }, {
+        "name" : "script",
+        "value" : "#\n# Available constants: \n#   They are to assign a type to a field with a value null.\n#   NULL_BOOLEAN, NULL_CHAR, NULL_BYTE, NULL_SHORT, NULL_INTEGER, NULL_LONG\n#   NULL_FLOATNULL_DOUBLE, NULL_DATE, NULL_DATETIME, NULL_TIME, NULL_DECIMAL\n#   NULL_BYTE_ARRAY, NULL_STRING, NULL_LIST, NULL_MAP\n# \n# Available Objects:\n# \n#  records: an array of records to process, depending on Jython processor\n#           processing mode it may have 1 record or all the records in the batch.\n#\n#  state: a dict that is preserved between invocations of this script. \n#         Useful for caching bits of data e.g. counters.\n#\n#  log.<loglevel>(msg, obj...): use instead of print to send log messages to the log4j log instead of stdout.\n#                               loglevel is any log4j level: e.g. info, error, warn, trace.\n#\n#  output.write(record): writes a record to processor output\n#\n#  error.write(record, message): sends a record to error\n#\n#  sdcFunctions.getFieldNull(Record, 'field path'): Receive a constant defined above \n#                                  to check if the field is typed field with value null\n#  sdcFunctions.createRecord(String recordId): Creates a new record.\n#                            Pass a recordId to uniquely identify the record and include enough information to track down the record source. \n#  sdcFunctions.createMap(boolean listMap): Create a map for use as a field in a record.\n#                            Pass True to this function to create a list map (ordered map)\n#\n#  sdcFunctions.createEvent(String type, int version): Creates a new event.\n#                            Create new empty event with standard headers.\n#  sdcFunctions.toEvent(Record): Send event to event stream\n#                            Only events created with sdcFunctions.createEvent are supported.\n#\n# Available Record Header Variables:\n#\n#  record.attributes: a map of record header attributes.\n#\n#  record.<header name>: get the value of 'header name'.\n#\n# Add additional module search paths:\n#import sys\n#sys.path.append('/some/other/dir/to/search')\n\n# Sample Jython code\nfor record in records:\n  try:\n    # Change record root field value to a STRING value\n    #record.value = 'Hello '\n\n\n    # Change record root field value to a MAP value and create an entry\n    #record.value = { 'V' : 'Hello'}\n\n    # Access a MAP entry\n    #record.value['X'] = record.value['V'] + ' World'\n\n    # Modify a MAP entry\n    #record.value['V'] = 5\n\n    # Create an ARRAY entry\n    #record.value['A'] = [ 'Element 1', 'Element 2' ]\n\n    # Access an ARRAY entry\n    #record.value['B'] = record.value['A'][0]\n\n    # Modify an existing ARRAY entry\n    #record.value['A'][0] = 100\n\n    # Assign a integer type to a field and value null\n    # record.value['null_int'] = NULL_INTEGER \n\n    # Check if the field is NULL_INTEGER(Both '==' and 'is' work). If so, assign a value \n    # if sdcFunctions.getFieldNull(record, '/null_int') == NULL_INTEGER:\n    #    record.value['null_int'] = 123\n\n    # Create a new record with map field \n    # newRecord = sdcFunctions.createRecord(record.sourceId + ':newRecordId')\n    # newRecord.value = {'field1' : 'val1', 'field2' : 'val2'}\n    # output.write(newRecord)\n\n    # Applies if the source uses WHOLE_FILE as data format\n    # input_stream = record.value['fileRef'].getInputStream()\n    # try:\n    #   input_stream.read() #Process the input stream\n    # finally:  \n    #   input_stream.close()\n\n    # Modify a record header attribute entry\n    #record.attributes['name'] = record.attributes['first_name'] + ' ' + record.attributes['last_name']\n\n    # Get a record header with field names ex. get sourceId and errorCode\n    #sourceId = record.sourceId\n    #errorCode = ''\n    #if record.errorCode:\n    #   errorCode = record.errorCode\n\n    # Write record to processor output\n    output.write(record)\n\n  except Exception as e:\n    # Send record to error\n    error.write(record, str(e))\n"
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "label" : "Jython Evaluator 1",
+        "xPos" : 720,
+        "yPos" : 50,
+        "stageType" : "PROCESSOR"
+      },
+      "inputLanes" : [ "JavaScriptEvaluator_01OutputLane14807971939450" ],
+      "outputLanes" : [ "JythonEvaluator_01OutputLane14807972012490" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "SparkEvaluator_01",
+      "library" : "streamsets-datacollector-cdh_5_7-lib",
+      "stageName" : "com_streamsets_pipeline_stage_processor_spark_StandaloneSparkDProcessor",
+      "stageVersion" : "1",
+      "configuration" : [ {
+        "name" : "sparkProcessorConfigBean.threadCount",
+        "value" : 4
+      }, {
+        "name" : "sparkProcessorConfigBean.appName",
+        "value" : "SDC Spark App"
+      }, {
+        "name" : "sparkProcessorConfigBean.transformerClass",
+        "value" : null
+      }, {
+        "name" : "sparkProcessorConfigBean.preprocessMethodArgs",
+        "value" : [ ]
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "label" : "Spark Evaluator 1",
+        "xPos" : 940,
+        "yPos" : 50,
+        "stageType" : "PROCESSOR"
+      },
+      "inputLanes" : [ "JythonEvaluator_01OutputLane14807972012490" ],
+      "outputLanes" : [ "SparkEvaluator_01OutputLane14807972074530" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "Trash_01",
+      "library" : "streamsets-datacollector-basic-lib",
+      "stageName" : "com_streamsets_pipeline_stage_destination_devnull_NullDTarget",
+      "stageVersion" : "1",
+      "configuration" : [ ],
+      "uiInfo" : {
+        "description" : "",
+        "label" : "Trash 1",
+        "xPos" : 1160,
+        "yPos" : 50,
+        "stageType" : "TARGET"
+      },
+      "inputLanes" : [ "SparkEvaluator_01OutputLane14807972074530" ],
+      "outputLanes" : [ ],
+      "eventLanes" : [ ]
+    } ],
+    "errorStage" : null,
+    "info" : {
+      "name" : "Language Processors",
+      "description" : "Just a list of language processors for show and tell (no real functionality in this pipeline)",
+      "created" : 1480797168301,
+      "lastModified" : 1480802876906,
+      "creator" : "admin",
+      "lastModifier" : "admin",
+      "lastRev" : "0",
+      "uuid" : "8b9c1571-8be2-4ef9-b74f-d74407ef888d",
+      "valid" : false,
+      "metadata" : {
+        "labels" : [ ]
+      }
+    },
+    "metadata" : {
+      "labels" : [ ]
+    },
+    "statsAggregatorStage" : null,
+    "valid" : false,
+    "issues" : {
+      "pipelineIssues" : [ {
+        "configGroup" : "BAD_RECORDS",
+        "configName" : "badRecordsHandling",
+        "additionalInfo" : null,
+        "level" : "PIPELINE_CONFIG",
+        "instanceName" : null,
+        "message" : "CREATION_009 - Pipeline error handling is not configured"
+      } ],
+      "stageIssues" : {
+        "SparkEvaluator_01" : [ {
+          "configGroup" : "SPARK",
+          "configName" : "sparkProcessorConfigBean.transformerClass",
+          "additionalInfo" : null,
+          "level" : "STAGE_CONFIG",
+          "instanceName" : "SparkEvaluator_01",
+          "message" : "VALIDATION_0007 - Configuration value is required"
+        } ]
+      },
+      "issueCount" : 2
+    },
+    "previewable" : false
+  },
+  "pipelineRules" : {
+    "metricsRuleDefinitions" : [ {
+      "id" : "badRecordsAlertID",
+      "alertText" : "High incidence of Error Records",
+      "metricId" : "pipeline.batchErrorRecords.counter",
+      "metricType" : "COUNTER",
+      "metricElement" : "COUNTER_COUNT",
+      "condition" : "${value() > 100}",
+      "sendEmail" : false,
+      "enabled" : false,
+      "timestamp" : 1480797168317,
+      "valid" : true
+    }, {
+      "id" : "stageErrorAlertID",
+      "alertText" : "High incidence of Stage Errors",
+      "metricId" : "pipeline.batchErrorMessages.counter",
+      "metricType" : "COUNTER",
+      "metricElement" : "COUNTER_COUNT",
+      "condition" : "${value() > 100}",
+      "sendEmail" : false,
+      "enabled" : false,
+      "timestamp" : 1480797168317,
+      "valid" : true
+    }, {
+      "id" : "idleGaugeID",
+      "alertText" : "Pipeline is Idle",
+      "metricId" : "RuntimeStatsGauge.gauge",
+      "metricType" : "GAUGE",
+      "metricElement" : "TIME_OF_LAST_RECEIVED_RECORD",
+      "condition" : "${time:now() - value() > 120000}",
+      "sendEmail" : false,
+      "enabled" : false,
+      "timestamp" : 1480797168317,
+      "valid" : true
+    }, {
+      "id" : "batchTimeAlertID",
+      "alertText" : "Batch taking more time to process",
+      "metricId" : "RuntimeStatsGauge.gauge",
+      "metricType" : "GAUGE",
+      "metricElement" : "CURRENT_BATCH_AGE",
+      "condition" : "${value() > 200}",
+      "sendEmail" : false,
+      "enabled" : false,
+      "timestamp" : 1480797168317,
+      "valid" : true
+    }, {
+      "id" : "memoryLimitAlertID",
+      "alertText" : "Memory limit for pipeline exceeded",
+      "metricId" : "pipeline.memoryConsumed.counter",
+      "metricType" : "COUNTER",
+      "metricElement" : "COUNTER_COUNT",
+      "condition" : "${value() > (jvm:maxMemoryMB() * 0.65)}",
+      "sendEmail" : false,
+      "enabled" : false,
+      "timestamp" : 1480797168317,
+      "valid" : true
+    } ],
+    "dataRuleDefinitions" : [ ],
+    "driftRuleDefinitions" : [ ],
+    "emailIds" : [ ],
+    "uuid" : "2b02dc69-8699-41a5-8d61-a94fd13b5cb8",
+    "ruleIssues" : null
+  },
+  "libraryDefinitions" : null
+}

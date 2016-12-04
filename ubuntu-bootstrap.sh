@@ -30,7 +30,18 @@ sudo apt-get -y install linux-image-extra-$(uname -r)
 sudo apt-get update
 
 sudo apt-get -y install vim
+
+# install redis
 sudo apt-get -y install redis-server
+sudo update-rc.d redis-server defaults
+sudo /etc/init.d/redis-server start
+
+#install redis python client
+sudo pip install redis
+
+#setup redis database
+python init_redis_data.py
+
 
 #install python necessities
 sudo apt-get install -y python-pip libmysqlclient-dev python-dev
@@ -47,25 +58,13 @@ echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-se
 sudo apt-get install -y mysql-server
 
 # java
-sudo apt-get install oracle-java8-installer
-
-#docker-compose
-sudo pip install docker-compose
+sudo apt-get install -y oracle-java8-installer
 
 #cloudera manager api
 sudo pip install cm-api
 
 #install AWS client
 sudo pip install awscli
-
-#install redis client
-sudo pip install redis
-
-#setup redis database
-python init_redis_data.py
-
-#copy Hive config files
-./copy_hive_conf.sh
 
 #python mysql
 sudo pip install mysql-python
@@ -99,9 +98,19 @@ tar xvzf streamsets-datacollector-all-2.2.0.0.tgz
 #up the open file limit
 echo "root soft nofile 40000" >> /etc/security/limits.conf && echo "root hard nofile 64000" >> /etc/security/limits.conf
 
+echo "session required pam_limits.so" >> /etc/pam.d/common-session
+
+#install jdbc drivers to sdc
+./install_jdbc_drivers.sh
+
+#docker-compose
+sudo pip install docker-compose
 
 #install docker
 curl -sSL https://get.docker.com/ | sh
 
 #start up docker compose in background
 sudo docker-compose up -d
+
+#copy Hive config files
+./copy_hive_conf.sh

@@ -1,8 +1,8 @@
 {
   "pipelineConfig" : {
-    "schemaVersion" : 1,
+    "schemaVersion" : 2,
     "version" : 5,
-    "uuid" : "e08d759f-19f3-44a5-b539-ffb84fa5336c",
+    "uuid" : "c5974e85-7d5f-4b43-bcea-77689c22a288",
     "description" : "",
     "configuration" : [ {
       "name" : "executionMode",
@@ -71,7 +71,7 @@
       "instanceName" : "com_streamsets_pipeline_stage_origin_jdbc_JdbcDSource_01",
       "library" : "streamsets-datacollector-jdbc-lib",
       "stageName" : "com_streamsets_pipeline_stage_origin_jdbc_JdbcDSource",
-      "stageVersion" : "7",
+      "stageVersion" : "8",
       "configuration" : [ {
         "name" : "isIncrementalMode",
         "value" : true
@@ -85,20 +85,8 @@
         "name" : "offsetColumn",
         "value" : "id"
       }, {
-        "name" : "queryInterval",
-        "value" : "${10 * SECONDS}"
-      }, {
         "name" : "jdbcRecordType",
         "value" : "LIST_MAP"
-      }, {
-        "name" : "maxBatchSize",
-        "value" : 1000
-      }, {
-        "name" : "maxClobSize",
-        "value" : 1000
-      }, {
-        "name" : "maxBlobSize",
-        "value" : 1000
       }, {
         "name" : "txnIdColumnName",
         "value" : null
@@ -153,16 +141,32 @@
       }, {
         "name" : "stageOnRecordError",
         "value" : "TO_ERROR"
+      }, {
+        "name" : "commonSourceConfigBean.queryInterval",
+        "value" : "${10 * SECONDS}"
+      }, {
+        "name" : "commonSourceConfigBean.maxBatchSize",
+        "value" : 1000
+      }, {
+        "name" : "commonSourceConfigBean.maxClobSize",
+        "value" : 1000
+      }, {
+        "name" : "commonSourceConfigBean.maxBlobSize",
+        "value" : 1000
+      }, {
+        "name" : "hikariConfigBean.transactionIsolation",
+        "value" : "DEFAULT"
       } ],
       "uiInfo" : {
+        "description" : "",
         "yPos" : 50,
         "xPos" : 60,
-        "description" : "",
-        "stageType" : "SOURCE",
-        "label" : "JDBC Consumer 1"
+        "label" : "JDBC Consumer 1",
+        "stageType" : "SOURCE"
       },
       "inputLanes" : [ ],
-      "outputLanes" : [ "com_streamsets_pipeline_stage_origin_jdbc_JdbcDSource_01OutputLane14689045895370" ]
+      "outputLanes" : [ "com_streamsets_pipeline_stage_origin_jdbc_JdbcDSource_01OutputLane14689045895370" ],
+      "eventLanes" : [ ]
     }, {
       "instanceName" : "com_streamsets_pipeline_stage_processor_kv_redis_RedisLookupDProcessor_01",
       "library" : "streamsets-datacollector-redis-lib",
@@ -210,14 +214,15 @@
         "value" : [ ]
       } ],
       "uiInfo" : {
+        "description" : "",
         "yPos" : 50,
         "xPos" : 280,
-        "description" : "",
-        "stageType" : "PROCESSOR",
-        "label" : "Redis Lookup Processor 1"
+        "label" : "Redis Lookup Processor 1",
+        "stageType" : "PROCESSOR"
       },
       "inputLanes" : [ "com_streamsets_pipeline_stage_origin_jdbc_JdbcDSource_01OutputLane14689045895370" ],
-      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_kv_redis_RedisLookupDProcessor_01OutputLane14695980234890" ]
+      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_kv_redis_RedisLookupDProcessor_01OutputLane14695980234890" ],
+      "eventLanes" : [ ]
     }, {
       "instanceName" : "com_streamsets_pipeline_stage_processor_jsonparser_JsonParserDProcessor_01",
       "library" : "streamsets-datacollector-basic-lib",
@@ -243,14 +248,15 @@
         "value" : [ ]
       } ],
       "uiInfo" : {
+        "description" : "",
         "yPos" : 50,
         "xPos" : 500,
-        "description" : "",
-        "stageType" : "PROCESSOR",
-        "label" : "JSON Parser 1"
+        "label" : "JSON Parser 1",
+        "stageType" : "PROCESSOR"
       },
       "inputLanes" : [ "com_streamsets_pipeline_stage_processor_kv_redis_RedisLookupDProcessor_01OutputLane14695980234890" ],
-      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_jsonparser_JsonParserDProcessor_01OutputLane14695984575440" ]
+      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_jsonparser_JsonParserDProcessor_01OutputLane14695984575440" ],
+      "eventLanes" : [ ]
     }, {
       "instanceName" : "com_streamsets_pipeline_stage_processor_expression_ExpressionDProcessor_01",
       "library" : "streamsets-datacollector-basic-lib",
@@ -282,14 +288,15 @@
         "value" : [ ]
       } ],
       "uiInfo" : {
+        "description" : "",
         "yPos" : 50,
         "xPos" : 720,
-        "description" : "",
-        "stageType" : "PROCESSOR",
-        "label" : "Expression Evaluator 1"
+        "label" : "Expression Evaluator 1",
+        "stageType" : "PROCESSOR"
       },
       "inputLanes" : [ "com_streamsets_pipeline_stage_processor_jsonparser_JsonParserDProcessor_01OutputLane14695984575440" ],
-      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_expression_ExpressionDProcessor_01OutputLane14689058419930" ]
+      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_expression_ExpressionDProcessor_01OutputLane14689058419930" ],
+      "eventLanes" : [ ]
     }, {
       "instanceName" : "com_streamsets_pipeline_stage_processor_fieldfilter_FieldFilterDProcessor_01",
       "library" : "streamsets-datacollector-basic-lib",
@@ -309,19 +316,51 @@
         "value" : [ ]
       } ],
       "uiInfo" : {
+        "description" : "",
         "yPos" : 50,
         "xPos" : 940,
-        "description" : "",
-        "stageType" : "PROCESSOR",
-        "label" : "Field Remover 1"
+        "label" : "Field Remover 1",
+        "stageType" : "PROCESSOR"
       },
       "inputLanes" : [ "com_streamsets_pipeline_stage_processor_expression_ExpressionDProcessor_01OutputLane14689058419930" ],
-      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_fieldfilter_FieldFilterDProcessor_01OutputLane14689057157050" ]
+      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_fieldfilter_FieldFilterDProcessor_01OutputLane14689057157050" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "JythonEvaluator_01",
+      "library" : "streamsets-datacollector-jython_2_7-lib",
+      "stageName" : "com_streamsets_pipeline_stage_processor_jython_JythonDProcessor",
+      "stageVersion" : "2",
+      "configuration" : [ {
+        "name" : "processingMode",
+        "value" : "BATCH"
+      }, {
+        "name" : "script",
+        "value" : "#\n# Available constants: \n#   They are to assign a type to a field with a value null.\n#   NULL_BOOLEAN, NULL_CHAR, NULL_BYTE, NULL_SHORT, NULL_INTEGER, NULL_LONG\n#   NULL_FLOATNULL_DOUBLE, NULL_DATE, NULL_DATETIME, NULL_TIME, NULL_DECIMAL\n#   NULL_BYTE_ARRAY, NULL_STRING, NULL_LIST, NULL_MAP\n# \n# Available Objects:\n# \n#  records: an array of records to process, depending on Jython processor\n#           processing mode it may have 1 record or all the records in the batch.\n#\n#  state: a dict that is preserved between invocations of this script. \n#         Useful for caching bits of data e.g. counters.\n#\n#  log.<loglevel>(msg, obj...): use instead of print to send log messages to the log4j log instead of stdout.\n#                               loglevel is any log4j level: e.g. info, error, warn, trace.\n#\n#  output.write(record): writes a record to processor output\n#\n#  error.write(record, message): sends a record to error\n#\n#  sdcFunctions.getFieldNull(Record, 'field path'): Receive a constant defined above \n#                                  to check if the field is typed field with value null\n#  sdcFunctions.createRecord(String recordId): Creates a new record.\n#                            Pass a recordId to uniquely identify the record and include enough information to track down the record source. \n#  sdcFunctions.createMap(boolean listMap): Create a map for use as a field in a record.\n#                            Pass True to this function to create a list map (ordered map)\n#\n#  sdcFunctions.createEvent(String type, int version): Creates a new event.\n#                            Create new empty event with standard headers.\n#  sdcFunctions.toEvent(Record): Send event to event stream\n#                            Only events created with sdcFunctions.createEvent are supported.\n#\n# Available Record Header Variables:\n#\n#  record.attributes: a map of record header attributes.\n#\n#  record.<header name>: get the value of 'header name'.\n#\n# Add additional module search paths:\nimport sys\nsys.path.append('/usr/local/lib/python2.7/dist-packages')\nfrom shortid import ShortId\n\nsid = ShortId()\n\n# Sample Jython code\nfor record in records:\n  try:\n    record.value['shortid'] = sid.generate()\n\n    # Change record root field value to a STRING value\n    #record.value = 'Hello '\n\n\n    # Change record root field value to a MAP value and create an entry\n    #record.value = { 'V' : 'Hello'}\n\n    # Access a MAP entry\n    #record.value['X'] = record.value['V'] + ' World'\n\n    # Modify a MAP entry\n    #record.value['V'] = 5\n\n    # Create an ARRAY entry\n    #record.value['A'] = [ 'Element 1', 'Element 2' ]\n\n    # Access an ARRAY entry\n    #record.value['B'] = record.value['A'][0]\n\n    # Modify an existing ARRAY entry\n    #record.value['A'][0] = 100\n\n    # Assign a integer type to a field and value null\n    # record.value['null_int'] = NULL_INTEGER \n\n    # Check if the field is NULL_INTEGER(Both '==' and 'is' work). If so, assign a value \n    # if sdcFunctions.getFieldNull(record, '/null_int') == NULL_INTEGER:\n    #    record.value['null_int'] = 123\n\n    # Create a new record with map field \n    # newRecord = sdcFunctions.createRecord(record.sourceId + ':newRecordId')\n    # newRecord.value = {'field1' : 'val1', 'field2' : 'val2'}\n    # output.write(newRecord)\n\n    # Applies if the source uses WHOLE_FILE as data format\n    # input_stream = record.value['fileRef'].getInputStream()\n    # try:\n    #   input_stream.read() #Process the input stream\n    # finally:  \n    #   input_stream.close()\n\n    # Modify a record header attribute entry\n    #record.attributes['name'] = record.attributes['first_name'] + ' ' + record.attributes['last_name']\n\n    # Get a record header with field names ex. get sourceId and errorCode\n    #sourceId = record.sourceId\n    #errorCode = ''\n    #if record.errorCode:\n    #   errorCode = record.errorCode\n\n    # Write record to processor output\n    output.write(record)\n\n  except Exception as e:\n    # Send record to error\n    error.write(record, str(e))"
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "label" : "Jython Evaluator 1",
+        "xPos" : 1160,
+        "yPos" : 50,
+        "stageType" : "PROCESSOR"
+      },
+      "inputLanes" : [ "com_streamsets_pipeline_stage_processor_fieldfilter_FieldFilterDProcessor_01OutputLane14689057157050" ],
+      "outputLanes" : [ "JythonEvaluator_01OutputLane14808957580440" ],
+      "eventLanes" : [ ]
     }, {
       "instanceName" : "com_streamsets_pipeline_stage_destination_hdfs_HdfsDTarget_01",
       "library" : "streamsets-datacollector-cdh_5_7-lib",
       "stageName" : "com_streamsets_pipeline_stage_destination_hdfs_HdfsDTarget",
-      "stageVersion" : "3",
+      "stageVersion" : "4",
       "configuration" : [ {
         "name" : "hdfsTargetConfigBean.hdfsUri",
         "value" : "hdfs://localhost"
@@ -428,9 +467,6 @@
         "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.textEmptyLineIfNull",
         "value" : false
       }, {
-        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.avroSchemaInHeader",
-        "value" : true
-      }, {
         "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.avroSchema",
         "value" : null
       }, {
@@ -454,16 +490,65 @@
       }, {
         "name" : "stageRecordPreconditions",
         "value" : [ ]
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.avroSchemaSource",
+        "value" : "HEADER"
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.registerSchema",
+        "value" : false
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.schemaRegistryUrlsForRegistration",
+        "value" : [ ]
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.schemaRegistryUrls",
+        "value" : [ ]
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.schemaLookupMode",
+        "value" : "AUTO"
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.subject",
+        "value" : ""
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.subjectToRegister",
+        "value" : ""
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.schemaId",
+        "value" : 0
+      }, {
+        "name" : "hdfsTargetConfigBean.fileNameSuffix",
+        "value" : null
+      }, {
+        "name" : "hdfsTargetConfigBean.hdfsPermissionCheck",
+        "value" : true
+      }, {
+        "name" : "hdfsTargetConfigBean.permissionEL",
+        "value" : null
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.textRecordSeparator",
+        "value" : "\\n"
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.fileNameEL",
+        "value" : "${record:value('/fileInfo/filename')}"
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.wholeFileExistsAction",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.includeChecksumInTheEvents",
+        "value" : false
+      }, {
+        "name" : "hdfsTargetConfigBean.dataGeneratorFormatConfig.checksumAlgorithm",
+        "value" : "MD5"
       } ],
       "uiInfo" : {
-        "yPos" : 50,
-        "xPos" : 1160,
         "description" : "",
-        "stageType" : "TARGET",
-        "label" : "Hadoop FS 1"
+        "yPos" : 50,
+        "xPos" : 1380,
+        "label" : "Hadoop FS 1",
+        "stageType" : "TARGET"
       },
-      "inputLanes" : [ "com_streamsets_pipeline_stage_processor_fieldfilter_FieldFilterDProcessor_01OutputLane14689057157050" ],
-      "outputLanes" : [ ]
+      "inputLanes" : [ "JythonEvaluator_01OutputLane14808957580440" ],
+      "outputLanes" : [ ],
+      "eventLanes" : [ ]
     } ],
     "errorStage" : {
       "instanceName" : "com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget_ErrorStage",
@@ -472,24 +557,25 @@
       "stageVersion" : "1",
       "configuration" : [ ],
       "uiInfo" : {
+        "description" : "",
         "yPos" : 50,
         "xPos" : 280,
-        "description" : "",
-        "stageType" : "TARGET",
-        "label" : "Error Records - Discard"
+        "label" : "Error Records - Discard",
+        "stageType" : "TARGET"
       },
       "inputLanes" : [ ],
-      "outputLanes" : [ ]
+      "outputLanes" : [ ],
+      "eventLanes" : [ ]
     },
     "info" : {
-      "name" : "DEMO_Lesson_4",
+      "name" : "DEMO_Lesson_4_1",
       "description" : "",
-      "created" : 1469593459245,
-      "lastModified" : 1469598939410,
+      "created" : 1480893341389,
+      "lastModified" : 1480898420955,
       "creator" : "admin",
       "lastModifier" : "admin",
       "lastRev" : "0",
-      "uuid" : "e08d759f-19f3-44a5-b539-ffb84fa5336c",
+      "uuid" : "c5974e85-7d5f-4b43-bcea-77689c22a288",
       "valid" : true,
       "metadata" : {
         "labels" : [ ]
@@ -505,22 +591,23 @@
       "stageVersion" : "1",
       "configuration" : [ ],
       "uiInfo" : {
+        "description" : "",
         "yPos" : 50,
         "xPos" : 280,
-        "description" : "",
-        "stageType" : "TARGET",
-        "label" : "Stats Aggregator - Discard"
+        "label" : "Stats Aggregator - Discard",
+        "stageType" : "TARGET"
       },
       "inputLanes" : [ ],
-      "outputLanes" : [ ]
+      "outputLanes" : [ ],
+      "eventLanes" : [ ]
     },
-    "previewable" : true,
     "valid" : true,
     "issues" : {
       "stageIssues" : { },
       "pipelineIssues" : [ ],
       "issueCount" : 0
-    }
+    },
+    "previewable" : true
   },
   "pipelineRules" : {
     "metricsRuleDefinitions" : [ {
@@ -582,7 +669,7 @@
     "dataRuleDefinitions" : [ ],
     "driftRuleDefinitions" : [ ],
     "emailIds" : [ ],
-    "uuid" : "347c3516-0d84-4c75-85f1-1ed48fd7f1eb",
+    "uuid" : "991b6c36-a89a-45f2-9231-386f1b4f3a75",
     "ruleIssues" : [ ]
   },
   "libraryDefinitions" : null

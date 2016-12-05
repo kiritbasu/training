@@ -4,6 +4,8 @@ chpasswd:
     root:str3ams3ts
   expire: false
 runcmd:
+  - echo "root soft nofile 40000" >> /etc/security/limits.conf && echo "root hard nofile 64000" >> /etc/security/limits.conf
+  - echo "session required pam_limits.so" >> /etc/pam.d/common-session
   - cd /root
   - sudo apt-get -y install git
   - git clone https://github.com/kiritbasu/training.git

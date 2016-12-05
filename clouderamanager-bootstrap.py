@@ -3,7 +3,7 @@ from cm_api.api_client import ApiResource
 
 #TODO: create a proper dns entry and use that.
 cm_host = "localhost"
-api = ApiResource(cm_host, username="cloudera", password="cloudera")
+api = ApiResource(cm_host, version=1, username="cloudera", password="cloudera")
 
 # Get a list of all clusters
 cdh5 = None

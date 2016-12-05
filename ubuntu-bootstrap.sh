@@ -29,6 +29,9 @@ sudo apt-get -y install linux-image-extra-$(uname -r)
 ## Update package manager.
 sudo apt-get update
 
+#install python necessities
+sudo apt-get install -y python-pip libmysqlclient-dev python-dev
+
 sudo apt-get -y install vim
 
 # install redis
@@ -41,10 +44,6 @@ sudo pip install redis
 
 #setup redis database
 python init_redis_data.py
-
-
-#install python necessities
-sudo apt-get install -y python-pip libmysqlclient-dev python-dev
 
 # set default mysql password
 sudo apt-get install -y debconf-utils
@@ -90,18 +89,11 @@ mv kafka_2.11-0.9.0.1 /root/kafka
 nohup /root/kafka/bin/zookeeper-server-start.sh /root/kafka/config/zookeeper.properties > /root/kafka/zookeeper.log 2>&1 &
 sleep 10
 nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties > /root/kafka/kafka.log 2>&1 &
+/root/kafka/bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic mytopic --partitions 1 --replication-factor 1
 
 #download and extract StreamSets
 wget https://archives.streamsets.com/datacollector/2.2.0.0/tarball/streamsets-datacollector-all-2.2.0.0.tgz
 tar xvzf streamsets-datacollector-all-2.2.0.0.tgz
-
-#up the open file limit
-echo "root soft nofile 40000" >> /etc/security/limits.conf && echo "root hard nofile 64000" >> /etc/security/limits.conf
-
-echo "session required pam_limits.so" >> /etc/pam.d/common-session
-
-echo "fs.file-max = 40000" >> /etc/sysctl.conf
-sysctl -p
 
 #install jdbc drivers to sdc
 ./install_jdbc_drivers.sh

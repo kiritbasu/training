@@ -67,3 +67,11 @@ echo ""
 echo "Checking if Cloudera is up (prints json if success)"
 echo "*****************"
 curl -X GET -u "cloudera:cloudera" http://localhost:7180/api/v5/clusters
+
+echo "Check if Hive Files have been copied (prints 3 xml file names if success)"
+echo "*****************"
+ls -l /etc/hive/conf
+
+echo ""
+echo "*****************"
+echo ""

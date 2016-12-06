@@ -8,3 +8,4 @@ streamsets-datacollector-2.2.0.0/bin/streamsets cli -U http://localhost:18630 st
 streamsets-datacollector-2.2.0.0/bin/streamsets cli -U http://localhost:18630 store import -n "DEMO_Lesson_4_2" -f samples/sample_pipelines/Lesson_4_2.json
 streamsets-datacollector-2.2.0.0/bin/streamsets cli -U http://localhost:18630 store import -n "Language Processors" -f samples/sample_pipelines/LanguageProcessors.json
 streamsets-datacollector-2.2.0.0/bin/streamsets cli -U http://localhost:18630 store import -n "Lookup Processors" -f samples/sample_pipelines/LookupProcessors.json
+streamsets-datacollector-2.2.0.0/bin/streamsets cli -U http://localhost:18630 store import -n "Spark Sample" -f samples/sample_pipelines/SparkTaxiTransactions.json

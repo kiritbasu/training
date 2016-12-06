@@ -32,10 +32,10 @@ import scala.Tuple2;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class GetCreditCardType extends SparkTransformer implements Serializable {
 
@@ -47,52 +47,62 @@ public class GetCreditCardType extends SparkTransformer implements Serializable 
   public void init(JavaSparkContext javaSparkContext, List<String> params) {
     // Params are in form "MasterCard=51,52,53,54,55"
     for (String param : params) {
+      // Parse the credit card type and list of prefixes
       String key = param.substring(0, param.indexOf('='));
       String prefixes[] = param.substring(param.indexOf('=') + 1, param.length()).split(",");
       ccTypes.put(key, prefixes);
     }
   }
 
-  private Boolean validateRecord(Record record) {
-    // We need a value to operate on!
+  private static Boolean validateRecord(Record record) {
+    // We need a field to operate on!
     Field field = record.get(VALUE_PATH);
-
     if (field == null) {
       return false;
     }
 
+    // The field must contain a value!
     String val = field.getValueAsString();
-
     return val != null && val.length() > 0;
   }
 
   @Override
-  public TransformResult transform(JavaRDD<Record> javaRDD) {
-    JavaPairRDD<Record, String> errors = javaRDD.mapPartitionsToPair(
+  public TransformResult transform(JavaRDD<Record> records) {
+    // Validate incoming records
+    JavaPairRDD<Record, String> errors = records.mapPartitionsToPair(
         new PairFlatMapFunction<Iterator<Record>, Record, String>() {
           public Iterable<Tuple2<Record, String>> call(Iterator<Record> recordIterator) throws Exception {
-            List<Tuple2<Record, String>> errors = new LinkedList<Tuple2<Record, String>>();
+            List<Tuple2<Record, String>> errors = new LinkedList<>();
+            // Iterate through incoming records
             while (recordIterator.hasNext()) {
               Record record = recordIterator.next();
+              // Validate each record
               if (!validateRecord(record)) {
-                errors.add(new Tuple2<>(record, "Credit card is null"));
+                // We have a problem - flag the record as an error
+                errors.add(new Tuple2<>(record, "Credit card number is missing"));
               }
             }
             return errors;
           }
         });
 
-    JavaRDD<Record> result = javaRDD.filter(new Function<Record, Boolean>() {
+    // Filter out invalid records before applying the map
+    JavaRDD<Record> result = records.filter(new Function<Record, Boolean>() {
+      // Only operate on valid records
       public Boolean call(Record record) throws Exception {
         return validateRecord(record);
       }
     }).map(new Function<Record, Record>() {
       public Record call(Record record) throws Exception {
+        // Get the credit card number from the record
         String creditCard = record.get(VALUE_PATH).getValueAsString();
 
+        // Look through the map of credit card types
         for (Map.Entry<String, String[]> entry : ccTypes.entrySet()) {
+          // Find the first matching prefix
           for (String prefix : entry.getValue()) {
             if (creditCard.startsWith(prefix)) {
+              // Set the credit card type
               record.set(RESULT_PATH, Field.create(entry.getKey()));
               return record;
             }

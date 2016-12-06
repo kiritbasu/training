@@ -91,6 +91,9 @@ sleep 10
 nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties > /root/kafka/kafka.log 2>&1 &
 /root/kafka/bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic mytopic --partitions 1 --replication-factor 1
 
+#install maven
+sudo apt-get install maven
+
 #download and extract StreamSets
 wget https://archives.streamsets.com/datacollector/2.2.0.0/tarball/streamsets-datacollector-all-2.2.0.0.tgz
 tar xvzf streamsets-datacollector-all-2.2.0.0.tgz

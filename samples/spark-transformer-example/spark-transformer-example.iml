@@ -9,7 +9,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.streamsets:streamsets-datacollector-spark-api:2.2.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.streamsets:streamsets-datacollector-spark-api:2.2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.streamsets:streamsets-datacollector-api:2.2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations-java5:15.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.spark:spark-core_2.10:1.6.0-cdh5.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.avro:avro-mapred:hadoop2:1.7.6-cdh5.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.avro:avro:1.7.6-cdh5.9.0" level="project" />

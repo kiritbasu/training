@@ -94,6 +94,12 @@ nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties
 #install maven
 sudo apt-get install maven
 
+#install elasticsearch
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.1.1.deb
+sudo dpkg -i elasticsearch-5.1.1.deb
+sudo systemctl enable elasticsearch.service
+sudo systemctl start elasticsearch
+
 #download and extract StreamSets
 wget https://archives.streamsets.com/datacollector/2.2.0.0/tarball/streamsets-datacollector-all-2.2.0.0.tgz
 tar xvzf streamsets-datacollector-all-2.2.0.0.tgz
@@ -101,11 +107,12 @@ tar xvzf streamsets-datacollector-all-2.2.0.0.tgz
 #install jdbc drivers to sdc
 ./install_jdbc_drivers.sh
 
-#docker-compose
-sudo pip install docker-compose
+#download fake log generator
+git clone https://github.com/kiritbasu/Fake-Apache-Log-Generator.git
 
 #install docker
 curl -sSL https://get.docker.com/ | sh
 
-#start up docker compose in background
-sudo docker-compose up -d
+#install cdh
+source /dev/stdin <<<"$(curl -sL http://tiny.cloudera.com/clusterdock.sh)"
+clusterdock_run ./bin/start_cluster cdh --help

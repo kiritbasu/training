@@ -12,9 +12,6 @@ runcmd:
   - cd training
   - chmod 744 *.sh
   - ./ubuntu-bootstrap.sh
-  - sleep 10
-  - ./cloudera-bootstrap.sh
-  - sleep 10
   #copy Hive config files
   - ./copy_hive_conf.sh
 final_message: "The system is finally up, after $UPTIME seconds"

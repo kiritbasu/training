@@ -1,8 +1,13 @@
 from peewee import *
 import csv
+import sys
 
+dbtype = sys.argv[1]
 
-db = MySQLDatabase('streamsetsdemo', passwd='password', user='root')
+if dbtype == 'mysql':
+    db = MySQLDatabase('streamsetsdemo', passwd='password', user='root')
+elif dbtype == 'postgres':
+    db = PostgresqlDatabase('streamsetsdemo', user='postgres')
 
 class ZipCode(Model):
     class Meta:
@@ -14,9 +19,10 @@ class ZipCode(Model):
     county=TextField()
     state=TextField()
 if __name__=='__main__':
+    print "Creating tables in " + dbtype
     db.create_tables([ZipCode], safe=True)
 
-    print "Inserting Data into MySQL"
+    print "Inserting Data into " + dbtype
     outarray=[]
     with open('zip_codes_states.csv', 'rU') as f:
         reader = csv.DictReader(f)

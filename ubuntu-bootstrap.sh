@@ -20,9 +20,6 @@ echo deb-src http://packages.dotdeb.org squeeze all >> /etc/apt/sources.list.d/d
 wget -q -O - http://www.dotdeb.org/dotdeb.gpg | sudo apt-key add -
 sudo apt-get update
 
-## Update package manager.
-sudo apt-get update
-
 ## Install the recommended package.
 sudo apt-get -y install linux-image-extra-$(uname -r)
 
@@ -31,6 +28,8 @@ sudo apt-get update
 
 #install python necessities
 sudo apt-get install -y python-pip libmysqlclient-dev python-dev
+
+sudo pip install --upgrade pip
 
 sudo apt-get -y install vim
 
@@ -80,6 +79,14 @@ tar xvzf mysql-connector-java-5.1.39.tar.gz
 cp mysql-connector-java-5.1.39/mysql-connector-java-5.1.39-bin.jar .
 rm -rf mysql-connector-java-5.1.39 mysql-connector-java-5.1.39.tar.gz
 
+#install postgres
+sudo apt-get install -y postgresql postgresql-contrib libpq-dev
+
+sudo pip install psycopg2
+
+#download postgres Drivers
+wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar
+
 #download kafka and start as daemon
 wget http://apache.mirrors.tds.net/kafka/0.9.0.1/kafka_2.11-0.9.0.1.tgz
 tar -xf kafka_2.11-0.9.0.1.tgz
@@ -92,13 +99,17 @@ nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties
 /root/kafka/bin/kafka-topics.sh --zookeeper localhost:2181 --create --topic mytopic --partitions 1 --replication-factor 1
 
 #install maven
-sudo apt-get install maven
+sudo apt-get install -y maven
 
 #install elasticsearch
 wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.1.1.deb
 sudo dpkg -i elasticsearch-5.1.1.deb
 sudo systemctl enable elasticsearch.service
 sudo systemctl start elasticsearch
+
+#install kibana
+wget https://artifacts.elastic.co/downloads/kibana/kibana-5.1.1-amd64.deb
+sudo dpkg -i kibana-5.1.1-amd64.deb
 
 #download and extract StreamSets
 wget https://archives.streamsets.com/datacollector/2.2.0.0/tarball/streamsets-datacollector-all-2.2.0.0.tgz
@@ -114,5 +125,5 @@ git clone https://github.com/kiritbasu/Fake-Apache-Log-Generator.git
 curl -sSL https://get.docker.com/ | sh
 
 #install cdh
-source /dev/stdin <<<"$(curl -sL http://tiny.cloudera.com/clusterdock.sh)"
-clusterdock_run ./bin/start_cluster cdh --help
+source /dev/stdin <<< "$(curl -sL http://tiny.cloudera.com/clusterdock.sh)"
+clusterdock_run ./bin/start_cluster cdh

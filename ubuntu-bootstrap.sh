@@ -70,9 +70,6 @@ sudo pip install mysql-python
 #client to simplyify mysql operations
 sudo pip install peewee
 
-#setup mysql database
-./setup_mysql.sh
-
 #download MySQL Drivers
 wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.39.tar.gz
 tar xvzf mysql-connector-java-5.1.39.tar.gz
@@ -86,6 +83,9 @@ sudo pip install psycopg2
 
 #download postgres Drivers
 wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar
+
+#setup databases
+./setup_rdbms.sh
 
 #download kafka and start as daemon
 wget http://apache.mirrors.tds.net/kafka/0.9.0.1/kafka_2.11-0.9.0.1.tgz

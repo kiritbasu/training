@@ -97,14 +97,17 @@ nohup /root/kafka/bin/kafka-server-start.sh /root/kafka/config/server.properties
 sudo apt-get install -y maven
 
 #install elasticsearch
-wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.1.1.deb
-sudo dpkg -i elasticsearch-5.1.1.deb
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.0.1.deb
+sudo dpkg -i elasticsearch-5.0.1.deb
 sudo systemctl enable elasticsearch.service
 sudo systemctl start elasticsearch
 
 #install kibana
-wget https://artifacts.elastic.co/downloads/kibana/kibana-5.1.1-amd64.deb
-sudo dpkg -i kibana-5.1.1-amd64.deb
+wget https://artifacts.elastic.co/downloads/kibana/kibana-5.0.1-amd64.deb
+sudo dpkg -i kibana-5.0.1-amd64.deb
+sudo systemctl enable kibana.service
+sudo systemctl start kibana.service
+
 
 #download and extract StreamSets
 wget https://archives.streamsets.com/datacollector/2.2.0.0/tarball/streamsets-datacollector-all-2.2.0.0.tgz

@@ -1,0 +1,634 @@
+{
+  "pipelineConfig" : {
+    "schemaVersion" : 2,
+    "version" : 5,
+    "uuid" : "14db5297-b2af-4d32-a0bf-418da4e430fd",
+    "description" : "",
+    "configuration" : [ {
+      "name" : "executionMode",
+      "value" : "STANDALONE"
+    }, {
+      "name" : "deliveryGuarantee",
+      "value" : "AT_LEAST_ONCE"
+    }, {
+      "name" : "shouldRetry",
+      "value" : true
+    }, {
+      "name" : "retryAttempts",
+      "value" : -1
+    }, {
+      "name" : "memoryLimit",
+      "value" : "${jvm:maxMemoryMB() * 0.65}"
+    }, {
+      "name" : "memoryLimitExceeded",
+      "value" : "STOP_PIPELINE"
+    }, {
+      "name" : "notifyOnStates",
+      "value" : [ "RUN_ERROR", "STOPPED", "FINISHED" ]
+    }, {
+      "name" : "emailIDs",
+      "value" : [ ]
+    }, {
+      "name" : "constants",
+      "value" : [ ]
+    }, {
+      "name" : "badRecordsHandling",
+      "value" : "streamsets-datacollector-basic-lib::com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget::1"
+    }, {
+      "name" : "statsAggregatorStage",
+      "value" : "streamsets-datacollector-basic-lib::com_streamsets_pipeline_stage_destination_devnull_StatsNullDTarget::1"
+    }, {
+      "name" : "clusterSlaveMemory",
+      "value" : 1024
+    }, {
+      "name" : "clusterSlaveJavaOpts",
+      "value" : "-XX:PermSize=128M -XX:MaxPermSize=256M -Dlog4j.debug"
+    }, {
+      "name" : "clusterLauncherEnv",
+      "value" : [ ]
+    }, {
+      "name" : "mesosDispatcherURL",
+      "value" : null
+    }, {
+      "name" : "hdfsS3ConfDir",
+      "value" : null
+    }, {
+      "name" : "rateLimit",
+      "value" : 0
+    } ],
+    "uiInfo" : {
+      "previewConfig" : {
+        "previewSource" : "CONFIGURED_SOURCE",
+        "batchSize" : 10,
+        "timeout" : 10000,
+        "writeToDestinations" : false,
+        "showHeader" : false,
+        "showFieldType" : true,
+        "rememberMe" : false
+      }
+    },
+    "stages" : [ {
+      "instanceName" : "com_streamsets_pipeline_stage_origin_jdbc_JdbcDSource_01",
+      "library" : "streamsets-datacollector-jdbc-lib",
+      "stageName" : "com_streamsets_pipeline_stage_origin_jdbc_JdbcDSource",
+      "stageVersion" : "8",
+      "configuration" : [ {
+        "name" : "isIncrementalMode",
+        "value" : true
+      }, {
+        "name" : "query",
+        "value" : "select * from zipcode where id > ${OFFSET} ORDER BY id"
+      }, {
+        "name" : "initialOffset",
+        "value" : "1"
+      }, {
+        "name" : "offsetColumn",
+        "value" : "id"
+      }, {
+        "name" : "jdbcRecordType",
+        "value" : "LIST_MAP"
+      }, {
+        "name" : "txnIdColumnName",
+        "value" : null
+      }, {
+        "name" : "txnMaxSize",
+        "value" : 10000
+      }, {
+        "name" : "hikariConfigBean.connectionString",
+        "value" : "jdbc:postgresql://localhost/streamsetsdemo"
+      }, {
+        "name" : "hikariConfigBean.useCredentials",
+        "value" : true
+      }, {
+        "name" : "hikariConfigBean.username",
+        "value" : "postgres"
+      }, {
+        "name" : "hikariConfigBean.password",
+        "value" : "postgres"
+      }, {
+        "name" : "hikariConfigBean.driverProperties",
+        "value" : [ ]
+      }, {
+        "name" : "hikariConfigBean.driverClassName",
+        "value" : null
+      }, {
+        "name" : "hikariConfigBean.connectionTestQuery",
+        "value" : null
+      }, {
+        "name" : "hikariConfigBean.maximumPoolSize",
+        "value" : 1
+      }, {
+        "name" : "hikariConfigBean.minIdle",
+        "value" : 1
+      }, {
+        "name" : "hikariConfigBean.connectionTimeout",
+        "value" : "${30 * SECONDS}"
+      }, {
+        "name" : "hikariConfigBean.idleTimeout",
+        "value" : "${10 * MINUTES}"
+      }, {
+        "name" : "hikariConfigBean.maxLifetime",
+        "value" : "${30 * MINUTES}"
+      }, {
+        "name" : "hikariConfigBean.readOnly",
+        "value" : true
+      }, {
+        "name" : "createJDBCNsHeaders",
+        "value" : false
+      }, {
+        "name" : "jdbcNsHeaderPrefix",
+        "value" : "jdbc."
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "commonSourceConfigBean.queryInterval",
+        "value" : "${10 * SECONDS}"
+      }, {
+        "name" : "commonSourceConfigBean.maxBatchSize",
+        "value" : 1000
+      }, {
+        "name" : "commonSourceConfigBean.maxClobSize",
+        "value" : 1000
+      }, {
+        "name" : "commonSourceConfigBean.maxBlobSize",
+        "value" : 1000
+      }, {
+        "name" : "hikariConfigBean.transactionIsolation",
+        "value" : "DEFAULT"
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "yPos" : 50,
+        "xPos" : 60,
+        "label" : "JDBC Consumer 1",
+        "stageType" : "SOURCE"
+      },
+      "inputLanes" : [ ],
+      "outputLanes" : [ "com_streamsets_pipeline_stage_origin_jdbc_JdbcDSource_01OutputLane14689045895370" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "com_streamsets_pipeline_stage_processor_kv_redis_RedisLookupDProcessor_01",
+      "library" : "streamsets-datacollector-redis-lib",
+      "stageName" : "com_streamsets_pipeline_stage_processor_kv_redis_RedisLookupDProcessor",
+      "stageVersion" : "1",
+      "configuration" : [ {
+        "name" : "conf.uri",
+        "value" : "redis://localhost:6379/"
+      }, {
+        "name" : "conf.connectionTimeout",
+        "value" : 60
+      }, {
+        "name" : "conf.mode",
+        "value" : "BATCH"
+      }, {
+        "name" : "conf.lookups",
+        "value" : [ {
+          "dataType" : "STRING",
+          "keyExpr" : "${record:value('/zipcode')}",
+          "outputFieldPath" : "/tract"
+        } ]
+      }, {
+        "name" : "conf.cache.enabled",
+        "value" : false
+      }, {
+        "name" : "conf.cache.maxSize",
+        "value" : -1
+      }, {
+        "name" : "conf.cache.evictionPolicyType",
+        "value" : "EXPIRE_AFTER_WRITE"
+      }, {
+        "name" : "conf.cache.expirationTime",
+        "value" : 1
+      }, {
+        "name" : "conf.cache.timeUnit",
+        "value" : "SECONDS"
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "yPos" : 50,
+        "xPos" : 280,
+        "label" : "Redis Lookup Processor 1",
+        "stageType" : "PROCESSOR"
+      },
+      "inputLanes" : [ "com_streamsets_pipeline_stage_origin_jdbc_JdbcDSource_01OutputLane14689045895370" ],
+      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_kv_redis_RedisLookupDProcessor_01OutputLane14695980234890" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "com_streamsets_pipeline_stage_processor_jsonparser_JsonParserDProcessor_01",
+      "library" : "streamsets-datacollector-basic-lib",
+      "stageName" : "com_streamsets_pipeline_stage_processor_jsonparser_JsonParserDProcessor",
+      "stageVersion" : "1",
+      "configuration" : [ {
+        "name" : "fieldPathToParse",
+        "value" : "/tract"
+      }, {
+        "name" : "removeCtrlChars",
+        "value" : false
+      }, {
+        "name" : "parsedFieldPath",
+        "value" : "/tract_data"
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "yPos" : 50,
+        "xPos" : 500,
+        "label" : "JSON Parser 1",
+        "stageType" : "PROCESSOR"
+      },
+      "inputLanes" : [ "com_streamsets_pipeline_stage_processor_kv_redis_RedisLookupDProcessor_01OutputLane14695980234890" ],
+      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_jsonparser_JsonParserDProcessor_01OutputLane14695984575440" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "com_streamsets_pipeline_stage_processor_expression_ExpressionDProcessor_01",
+      "library" : "streamsets-datacollector-basic-lib",
+      "stageName" : "com_streamsets_pipeline_stage_processor_expression_ExpressionDProcessor",
+      "stageVersion" : "2",
+      "configuration" : [ {
+        "name" : "expressionProcessorConfigs",
+        "value" : [ {
+          "fieldToSet" : "/bus_ratio",
+          "expression" : "${record:value('/tract_data/bus_ratio')}"
+        }, {
+          "fieldToSet" : "/res_ratio",
+          "expression" : "${record:value('/tract_data/res_ratio')}"
+        } ]
+      }, {
+        "name" : "headerAttributeConfigs",
+        "value" : [ {
+          "attributeToSet" : "/",
+          "headerAttributeExpression" : "${record:value('/')}"
+        } ]
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "yPos" : 50,
+        "xPos" : 720,
+        "label" : "Expression Evaluator 1",
+        "stageType" : "PROCESSOR"
+      },
+      "inputLanes" : [ "com_streamsets_pipeline_stage_processor_jsonparser_JsonParserDProcessor_01OutputLane14695984575440" ],
+      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_expression_ExpressionDProcessor_01OutputLane14689058419930" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "com_streamsets_pipeline_stage_processor_fieldfilter_FieldFilterDProcessor_01",
+      "library" : "streamsets-datacollector-basic-lib",
+      "stageName" : "com_streamsets_pipeline_stage_processor_fieldfilter_FieldFilterDProcessor",
+      "stageVersion" : "1",
+      "configuration" : [ {
+        "name" : "filterOperation",
+        "value" : "REMOVE"
+      }, {
+        "name" : "fields",
+        "value" : [ "/tract_data", "/tract" ]
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "yPos" : 50,
+        "xPos" : 940,
+        "label" : "Field Remover 1",
+        "stageType" : "PROCESSOR"
+      },
+      "inputLanes" : [ "com_streamsets_pipeline_stage_processor_expression_ExpressionDProcessor_01OutputLane14689058419930" ],
+      "outputLanes" : [ "com_streamsets_pipeline_stage_processor_fieldfilter_FieldFilterDProcessor_01OutputLane14689057157050" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "JythonEvaluator_01",
+      "library" : "streamsets-datacollector-jython_2_7-lib",
+      "stageName" : "com_streamsets_pipeline_stage_processor_jython_JythonDProcessor",
+      "stageVersion" : "2",
+      "configuration" : [ {
+        "name" : "processingMode",
+        "value" : "BATCH"
+      }, {
+        "name" : "script",
+        "value" : "#\n# Available constants: \n#   They are to assign a type to a field with a value null.\n#   NULL_BOOLEAN, NULL_CHAR, NULL_BYTE, NULL_SHORT, NULL_INTEGER, NULL_LONG\n#   NULL_FLOATNULL_DOUBLE, NULL_DATE, NULL_DATETIME, NULL_TIME, NULL_DECIMAL\n#   NULL_BYTE_ARRAY, NULL_STRING, NULL_LIST, NULL_MAP\n# \n# Available Objects:\n# \n#  records: an array of records to process, depending on Jython processor\n#           processing mode it may have 1 record or all the records in the batch.\n#\n#  state: a dict that is preserved between invocations of this script. \n#         Useful for caching bits of data e.g. counters.\n#\n#  log.<loglevel>(msg, obj...): use instead of print to send log messages to the log4j log instead of stdout.\n#                               loglevel is any log4j level: e.g. info, error, warn, trace.\n#\n#  output.write(record): writes a record to processor output\n#\n#  error.write(record, message): sends a record to error\n#\n#  sdcFunctions.getFieldNull(Record, 'field path'): Receive a constant defined above \n#                                  to check if the field is typed field with value null\n#  sdcFunctions.createRecord(String recordId): Creates a new record.\n#                            Pass a recordId to uniquely identify the record and include enough information to track down the record source. \n#  sdcFunctions.createMap(boolean listMap): Create a map for use as a field in a record.\n#                            Pass True to this function to create a list map (ordered map)\n#\n#  sdcFunctions.createEvent(String type, int version): Creates a new event.\n#                            Create new empty event with standard headers.\n#  sdcFunctions.toEvent(Record): Send event to event stream\n#                            Only events created with sdcFunctions.createEvent are supported.\n#\n# Available Record Header Variables:\n#\n#  record.attributes: a map of record header attributes.\n#\n#  record.<header name>: get the value of 'header name'.\n#\n# Add additional module search paths:\nimport sys\nsys.path.append('/usr/local/lib/python2.7/dist-packages')\nfrom shortid import ShortId\n\nsid = ShortId()\n\n# Sample Jython code\nfor record in records:\n  try:\n    record.value['shortid'] = sid.generate()\n\n    # Change record root field value to a STRING value\n    #record.value = 'Hello '\n\n\n    # Change record root field value to a MAP value and create an entry\n    #record.value = { 'V' : 'Hello'}\n\n    # Access a MAP entry\n    #record.value['X'] = record.value['V'] + ' World'\n\n    # Modify a MAP entry\n    #record.value['V'] = 5\n\n    # Create an ARRAY entry\n    #record.value['A'] = [ 'Element 1', 'Element 2' ]\n\n    # Access an ARRAY entry\n    #record.value['B'] = record.value['A'][0]\n\n    # Modify an existing ARRAY entry\n    #record.value['A'][0] = 100\n\n    # Assign a integer type to a field and value null\n    # record.value['null_int'] = NULL_INTEGER \n\n    # Check if the field is NULL_INTEGER(Both '==' and 'is' work). If so, assign a value \n    # if sdcFunctions.getFieldNull(record, '/null_int') == NULL_INTEGER:\n    #    record.value['null_int'] = 123\n\n    # Create a new record with map field \n    # newRecord = sdcFunctions.createRecord(record.sourceId + ':newRecordId')\n    # newRecord.value = {'field1' : 'val1', 'field2' : 'val2'}\n    # output.write(newRecord)\n\n    # Applies if the source uses WHOLE_FILE as data format\n    # input_stream = record.value['fileRef'].getInputStream()\n    # try:\n    #   input_stream.read() #Process the input stream\n    # finally:  \n    #   input_stream.close()\n\n    # Modify a record header attribute entry\n    #record.attributes['name'] = record.attributes['first_name'] + ' ' + record.attributes['last_name']\n\n    # Get a record header with field names ex. get sourceId and errorCode\n    #sourceId = record.sourceId\n    #errorCode = ''\n    #if record.errorCode:\n    #   errorCode = record.errorCode\n\n    # Write record to processor output\n    output.write(record)\n\n  except Exception as e:\n    # Send record to error\n    error.write(record, str(e))"
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "label" : "Jython Evaluator 1",
+        "xPos" : 1160,
+        "yPos" : 50,
+        "stageType" : "PROCESSOR"
+      },
+      "inputLanes" : [ "com_streamsets_pipeline_stage_processor_fieldfilter_FieldFilterDProcessor_01OutputLane14689057157050" ],
+      "outputLanes" : [ "JythonEvaluator_01OutputLane14808957580440" ],
+      "eventLanes" : [ ]
+    }, {
+      "instanceName" : "KafkaProducer_01",
+      "library" : "streamsets-datacollector-apache-kafka_0_9-lib",
+      "stageName" : "com_streamsets_pipeline_stage_destination_kafka_KafkaDTarget",
+      "stageVersion" : "3",
+      "configuration" : [ {
+        "name" : "conf.dataFormat",
+        "value" : "SDC_JSON"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.charset",
+        "value" : "UTF-8"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.csvFileFormat",
+        "value" : "CSV"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.csvHeader",
+        "value" : "NO_HEADER"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.csvReplaceNewLines",
+        "value" : true
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.csvReplaceNewLinesString",
+        "value" : " "
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.csvCustomDelimiter",
+        "value" : "|"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.csvCustomEscape",
+        "value" : "\\"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.csvCustomQuote",
+        "value" : "\""
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.jsonMode",
+        "value" : "MULTIPLE_OBJECTS"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.textFieldPath",
+        "value" : "/"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.textRecordSeparator",
+        "value" : "\\n"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.textEmptyLineIfNull",
+        "value" : false
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.avroSchemaSource",
+        "value" : null
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.avroSchema",
+        "value" : null
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.registerSchema",
+        "value" : false
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.schemaRegistryUrlsForRegistration",
+        "value" : [ ]
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.schemaRegistryUrls",
+        "value" : [ ]
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.schemaLookupMode",
+        "value" : "SUBJECT"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.subject",
+        "value" : null
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.subjectToRegister",
+        "value" : null
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.schemaId",
+        "value" : null
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.includeSchema",
+        "value" : true
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.avroCompression",
+        "value" : "NULL"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.binaryFieldPath",
+        "value" : "/"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.protoDescriptorFile",
+        "value" : null
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.messageType",
+        "value" : null
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.fileNameEL",
+        "value" : "${record:value('/fileInfo/filename')}"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.wholeFileExistsAction",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.includeChecksumInTheEvents",
+        "value" : false
+      }, {
+        "name" : "conf.dataGeneratorFormatConfig.checksumAlgorithm",
+        "value" : "MD5"
+      }, {
+        "name" : "conf.metadataBrokerList",
+        "value" : "localhost:9092"
+      }, {
+        "name" : "conf.runtimeTopicResolution",
+        "value" : false
+      }, {
+        "name" : "conf.topicExpression",
+        "value" : "${record:value('/topic')}"
+      }, {
+        "name" : "conf.topicWhiteList",
+        "value" : "*"
+      }, {
+        "name" : "conf.topic",
+        "value" : "postgresdata"
+      }, {
+        "name" : "conf.partitionStrategy",
+        "value" : "ROUND_ROBIN"
+      }, {
+        "name" : "conf.partition",
+        "value" : "${0}"
+      }, {
+        "name" : "conf.singleMessagePerBatch",
+        "value" : false
+      }, {
+        "name" : "conf.keySerializer",
+        "value" : "STRING"
+      }, {
+        "name" : "conf.valueSerializer",
+        "value" : "DEFAULT"
+      }, {
+        "name" : "conf.kafkaProducerConfigs",
+        "value" : [ ]
+      }, {
+        "name" : "stageOnRecordError",
+        "value" : "TO_ERROR"
+      }, {
+        "name" : "stageRequiredFields",
+        "value" : [ ]
+      }, {
+        "name" : "stageRecordPreconditions",
+        "value" : [ ]
+      } ],
+      "uiInfo" : {
+        "description" : "",
+        "label" : "Kafka Producer 1",
+        "xPos" : 1380,
+        "yPos" : 50,
+        "stageType" : "TARGET"
+      },
+      "inputLanes" : [ "JythonEvaluator_01OutputLane14808957580440" ],
+      "outputLanes" : [ ],
+      "eventLanes" : [ ]
+    } ],
+    "errorStage" : {
+      "instanceName" : "com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget_ErrorStage",
+      "library" : "streamsets-datacollector-basic-lib",
+      "stageName" : "com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget",
+      "stageVersion" : "1",
+      "configuration" : [ ],
+      "uiInfo" : {
+        "description" : "",
+        "yPos" : 50,
+        "xPos" : 280,
+        "label" : "Error Records - Discard",
+        "stageType" : "TARGET"
+      },
+      "inputLanes" : [ ],
+      "outputLanes" : [ ],
+      "eventLanes" : [ ]
+    },
+    "info" : {
+      "name" : "DEMO_Lesson_4_1",
+      "description" : "",
+      "created" : 1483327744158,
+      "lastModified" : 1483328276729,
+      "creator" : "admin",
+      "lastModifier" : "admin",
+      "lastRev" : "0",
+      "uuid" : "14db5297-b2af-4d32-a0bf-418da4e430fd",
+      "valid" : true,
+      "metadata" : {
+        "labels" : [ ]
+      }
+    },
+    "metadata" : {
+      "labels" : [ ]
+    },
+    "statsAggregatorStage" : {
+      "instanceName" : "com_streamsets_pipeline_stage_destination_devnull_StatsNullDTarget_StatsAggregatorStage",
+      "library" : "streamsets-datacollector-basic-lib",
+      "stageName" : "com_streamsets_pipeline_stage_destination_devnull_StatsNullDTarget",
+      "stageVersion" : "1",
+      "configuration" : [ ],
+      "uiInfo" : {
+        "description" : "",
+        "yPos" : 50,
+        "xPos" : 280,
+        "label" : "Stats Aggregator - Discard",
+        "stageType" : "TARGET"
+      },
+      "inputLanes" : [ ],
+      "outputLanes" : [ ],
+      "eventLanes" : [ ]
+    },
+    "valid" : true,
+    "issues" : {
+      "issueCount" : 0,
+      "pipelineIssues" : [ ],
+      "stageIssues" : { }
+    },
+    "previewable" : true
+  },
+  "pipelineRules" : {
+    "metricsRuleDefinitions" : [ {
+      "id" : "badRecordsAlertID",
+      "alertText" : "High incidence of Error Records",
+      "metricId" : "pipeline.batchErrorRecords.meter",
+      "metricType" : "METER",
+      "metricElement" : "METER_COUNT",
+      "condition" : "${value() > 100}",
+      "sendEmail" : false,
+      "enabled" : false,
+      "timestamp" : 0,
+      "valid" : true
+    }, {
+      "id" : "stageErrorAlertID",
+      "alertText" : "High incidence of Stage Errors",
+      "metricId" : "pipeline.batchErrorMessages.meter",
+      "metricType" : "METER",
+      "metricElement" : "METER_COUNT",
+      "condition" : "${value() > 100}",
+      "sendEmail" : false,
+      "enabled" : false,
+      "timestamp" : 0,
+      "valid" : true
+    }, {
+      "id" : "idleGaugeID",
+      "alertText" : "Pipeline is Idle",
+      "metricId" : "RuntimeStatsGauge.gauge",
+      "metricType" : "GAUGE",
+      "metricElement" : "TIME_OF_LAST_RECEIVED_RECORD",
+      "condition" : "${time:now() - value() > 120000}",
+      "sendEmail" : false,
+      "enabled" : false,
+      "timestamp" : 0,
+      "valid" : true
+    }, {
+      "id" : "batchTimeAlertID",
+      "alertText" : "Batch taking more time to process",
+      "metricId" : "RuntimeStatsGauge.gauge",
+      "metricType" : "GAUGE",
+      "metricElement" : "CURRENT_BATCH_AGE",
+      "condition" : "${value() > 200}",
+      "sendEmail" : false,
+      "enabled" : false,
+      "timestamp" : 0,
+      "valid" : true
+    }, {
+      "id" : "memoryLimitAlertID",
+      "alertText" : "Memory limit for pipeline exceeded",
+      "metricId" : "pipeline.memoryConsumed.counter",
+      "metricType" : "COUNTER",
+      "metricElement" : "COUNTER_COUNT",
+      "condition" : "${value() > (jvm:maxMemoryMB() * 0.65)}",
+      "sendEmail" : false,
+      "enabled" : false,
+      "timestamp" : 0,
+      "valid" : true
+    } ],
+    "dataRuleDefinitions" : [ ],
+    "driftRuleDefinitions" : [ ],
+    "emailIds" : [ ],
+    "uuid" : "229b1a30-65da-4a2b-bf97-8a44b61057a9",
+    "ruleIssues" : [ ]
+  },
+  "libraryDefinitions" : null
+}

@@ -58,11 +58,6 @@ sudo apt-get install -y mysql-server
 # java
 sudo apt-get install -y oracle-java8-installer
 
-#cloudera manager api
-sudo pip install cm-api
-
-#install AWS client
-sudo pip install awscli
 
 #python mysql
 sudo pip install mysql-python
